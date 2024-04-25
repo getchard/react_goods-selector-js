@@ -1,4 +1,5 @@
 import './App.scss';
+import 'bulma/css/bulma.css';
 import { useState } from 'react';
 
 export const goods = [
@@ -15,11 +16,7 @@ export const goods = [
 ];
 
 export const App = () => {
-  const [selectedGood, setSelectedGood] = useState('');
-
-  const addButton = (good) => {
-    setSelectedGood(good);
-  };
+  const [selectedGood, setSelectedGood] = useState('Jam');
 
   const clear = () => {
     setSelectedGood('');
@@ -27,35 +24,33 @@ export const App = () => {
 
   return (
     <main className="section container">
-      {!selectedGood ? (
-        <h1 className="title is-flex is-align-items-center">
-          No goods selected
-        </h1>
-      ) : (
-        <h1 className="title is-flex is-align-items-center">
-          {selectedGood} is selected
+      <h1 className="title is-flex is-align-items-center">
+        {!selectedGood ? 'No goods selected' : `${selectedGood} is selected`}
+        {selectedGood && (
           <button
             data-cy="ClearButton"
             type="button"
             className="delete ml-3"
             onClick={clear}
           />
-        </h1>
-      )}
+        )}
+      </h1>
 
       <table className="table">
         <tbody>
           {goods.map(good => (
-            <tr key={good} data-cy="Good">
-              {selectedGood !== good && (
+            <tr
+              key={good}
+              data-cy="Good"
+              className="has-background-success-light"
+            >
+              {!selectedGood && (
                 <td>
                   <button
                     data-cy="AddButton"
                     type="button"
                     className="button"
-                    onClick={() => {
-                      addButton(good);
-                    }}
+                    onClick={() => setSelectedGood(good)}
                   >
                     +
                   </button>
@@ -64,6 +59,18 @@ export const App = () => {
               <td data-cy="GoodTitle" className="is-vcentered">
                 {good}
               </td>
+              {selectedGood === good && (
+                <td>
+                  <button
+                    data-cy="RemoveButton"
+                    type="button"
+                    className="button is-info"
+                    onClick={clear}
+                  >
+                    -
+                  </button>
+                </td>
+              )}
             </tr>
           ))}
         </tbody>
