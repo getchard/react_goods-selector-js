@@ -22,20 +22,16 @@ export const App = () => {
     setSelectedGood('');
   };
 
-  const selectedGoodsMessage = selectedGood
-    ? `${selectedGood} is selected`
-    : 'No goods selected';
-
   return (
     <main className="section container">
       <h1 className="title is-flex is-align-items-center">
-        {selectedGoodsMessage}
+        {selectedGood ? `${selectedGood} is selected` : 'No goods selected'}
         {selectedGood && (
           <button
+            onClick={clear}
             data-cy="ClearButton"
             type="button"
             className="delete ml-3"
-            onClick={clear}
           />
         )}
       </h1>
@@ -50,8 +46,8 @@ export const App = () => {
                 selectedGood === good ? 'has-background-success-light' : ''
               }
             >
-              {selectedGood !== good ? (
-                <td>
+              <td>
+                {selectedGood !== good ? (
                   <button
                     onClick={() => setSelectedGood(good)}
                     data-cy="AddButton"
@@ -60,9 +56,7 @@ export const App = () => {
                   >
                     +
                   </button>
-                </td>
-              ) : (
-                <td>
+                ) : (
                   <button
                     onClick={() => setSelectedGood('')}
                     data-cy="RemoveButton"
@@ -71,8 +65,11 @@ export const App = () => {
                   >
                     -
                   </button>
-                </td>
-              )}
+                )}
+              </td>
+              <td data-cy="GoodTitle" className="is-vcentered">
+                {good}
+              </td>
             </tr>
           ))}
         </tbody>
